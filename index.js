@@ -8,8 +8,8 @@ var bodyParser = require('body-parser')
 
 
 
-//const base_url = "http://localhost:3000"
-const base_url = "http://10.104.7.149"
+const base_url = "http://localhost:3000"
+//const base_url = "http://10.104.7.149"
 //const base_url = "node56377-noderest-test1.proen.app.ruk-com.cloud:11298"
 
 
@@ -22,19 +22,19 @@ app.use(bodyParser.urlencoded({ extended:false}))
 
 app.use(express.static(__dirname + '/public'))
 
-app.get('/views/', async(req,res)=>{
+app.get('/', async(req,res)=>{
    try{
-    const respones = await axios.get(base_url + '/views/books')
-    res.render("/views/books",{books:respones.data})
+    const respones = await axios.get(base_url + '/books')
+    res.render("books",{books:respones.data})
    }catch(err){
     console.error(err)
     res.status(500).send('Error')
    }
 })
 
-app.get('/views/book/:id',async(req,res)=>{
+app.get('/book/:id',async(req,res)=>{
     try{
-        const respones = await axios.get(base_url + '/views/books/' + req.params.id)
+        const respones = await axios.get(base_url + '/books/' + req.params.id)
         res.render("book",{book:respones.data})
        }catch(err){
         console.error(err)
@@ -42,15 +42,15 @@ app.get('/views/book/:id',async(req,res)=>{
        }
 })
 
-app.get('/views/create',(req,res)=>{ // show create desktop
+app.get('/create',(req,res)=>{ // show create desktop
     res.render("create")
 })
 
-app.post('/views/create',async(req,res)=>{
+app.post('/create',async(req,res)=>{
    try{
     const data = { title: req.body.title , author: req.body.author}
-    await axios.post(base_url + '/views/books' ,data)
-    res.redirect('/views/')
+    await axios.post(base_url + '/books' ,data)
+    res.redirect('/')
    }catch(err){
     console.error(err)
     res.status(500).send('Error')
@@ -60,7 +60,7 @@ app.post('/views/create',async(req,res)=>{
 app.get('/update/:id',async(req,res)=>{
     try{
         const respones = await axios.get(
-            base_url + '/views/books/' + req.params.id) 
+            base_url + '/books/' + req.params.id) 
             res.render('update',{book: respones.data})
   } catch(err){
       console.error(err)
@@ -68,21 +68,21 @@ app.get('/update/:id',async(req,res)=>{
     }
 })
 
-app.post('/views/update/:id',async(req,res)=>{
+app.post('/update/:id',async(req,res)=>{
    try{
     const data = { title: req.body.title , author: req.body.author}
-    await axios.put(base_url + '/views/books/' + req.params.id,data)
-    res.redirect('/views/')
+    await axios.put(base_url + '/books/' + req.params.id,data)
+    res.redirect('/')
    }catch(err){
     console.error(err)
     res.status(500).send('Error')
    }
 })
 
-app.get('/views/delete/:id',async(req,res)=>{
+app.get('/delete/:id',async(req,res)=>{
    try{
-    await axios.delete(base_url + '/views/books/' + req.params.id)
-    res.redirect('/views/')
+    await axios.delete(base_url + '/books/' + req.params.id)
+    res.redirect('/')
    }catch(err){
     console.error(err)
     res.status(500).send('Error')
